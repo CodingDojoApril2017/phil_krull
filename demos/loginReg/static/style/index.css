@@ -1,0 +1,13 @@
+.main_content{
+  width: 800px;
+  margin: 0 auto;
+}
+label{
+  display: block;
+}
+fieldset{
+  display: inline-block;
+  vertical-align: top;
+  width: 275px;
+  height: 150px;
+}

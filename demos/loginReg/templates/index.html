@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login/ Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}" media="screen" title="no title">
+  </head>
+  <body>
+    <div class="main_content">
+      <fieldset>
+        <legend>Register</legend>
+        <form class="register" action="/register" method="post">
+          <label for="first_name">
+            First Name
+            <input type="text" name="first_name" min='2'>
+          </label>
+          <label for="last_name">
+            Last Name
+            <input type="text" name="last_name">
+          </label>
+          <label for="email">
+            Email
+            <input type="email" name="email">
+          </label>
+          <label for="password">
+            Password
+            <input type="password" name="password" value='password'>
+          </label>
+          <label for="password_confirmation">
+            Confirm Password
+            <input type="password" name="password_confirmation" value='password'>
+          </label>
+          <button type="submit" name="button">Register</button>
+        </form>
+      </fieldset>
+      <fieldset>
+        <legend>Login</legend>
+        <form class="login" action="/login" method="post">
+          <label for="email">
+            Email
+            <input type="text" name="email">
+          </label>
+          <label for="password">
+            Password
+            <input type="password" name="password">
+          </label>
+          <button type="submit" name="button">Login</button>
+        </form>
+      </fieldset>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <p>{{message}}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </body>
+</html>

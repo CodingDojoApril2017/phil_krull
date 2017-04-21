@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Add Author</h1>
+    <form class="" action="{% url 'author:create' %}" method="post">
+      {% csrf_token %}
+      <p>Name: <input type="text" name="name" value=""></p>
+      <input type="submit" name="" value="add author">
+    </form>
+    <h1>All authors</h1>
+    <ul>
+      {% for author in all_authors %}
+        <li>{{ author.name }}</li>
+        <ul>
+          {% for book in author.wrote.all %}
+            <li>{{ book.title }}</li>
+            <ul>
+              <li>Published by</li>
+              {% for publisher in book.published_by.all %}
+                <li>{{ publisher.name }}</li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </ul>
+    <h1>Add Book</h1>
+    <form class="" action="{% url 'book:create' %}" method="post">
+      {% csrf_token %}
+      <p>Title: <input type="text" name="title" value=""></p>
+      <p>Author:
+        <select class="" name="author_id">
+          {% for author in all_authors %}
+            <option value="{{ author.id }}">{{ author.name }}</option>
+          {% endfor %}
+        </select></p>
+        <input type="submit" name="" value="add book">
+    </form>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    <h1>Books</h1>
+    {{ all_books }}
+    <ul>
+    {% for book in all_books %}
+      <li>{{ book.title }} written by: {{ book.author.name }}</li>
+    {% endfor %}
+  </ul>
+  <h1>Add Publisher</h1>
+  <form class="" action="{% url 'publisher:create' %}" method="post">
+    {% csrf_token %}
+    <p>Name: <input type="text" name="name" value=""></p>
+    <input type="submit" name="" value="Add publisher">
+  </form>
+  <h1>All Publishers</h1>
+  <ul>
+    {% for publisher in all_publisher %}
+      <li>{{ publisher.name }} published {{ publisher.books.count }} books</li>
+      <ul>
+        {% for book in publisher.books.all %}
+          <li>{{ book.title }}</li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </ul>
+  <h2>Add book to publisher</h2>
+  <form class="" action="{% url 'publisher:add_book_to_publisher' %}" method="post">
+    {% csrf_token %}
+    <p>Book:
+      <select class="" name="book_id">
+        {% for book in all_books %}
+          <option value="{{ book.id }}">{{ book.title }}</option>
+        {% endfor %}
+      </select>
+    </p>
+      <p>Publisher:
+        <select class="" name="publisher_id">
+          {% for publisher in all_publisher %}
+            <option value="{{ publisher.id }}">{{ publisher.name }}</option>
+          {% endfor %}
+        </select>
+      </p>
+      <input type="submit" name="" value="add book to publisher">
+  </form>
+  </body>
+</html>
