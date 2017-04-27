@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <form class="" action="{% url 'users:logout' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" name="submit" value="Logout">
+    </form>
+    <form class="" action="{% url 'courses:create_course' %}" method="post">
+      {% csrf_token %}
+      <p>Course
+        <input type="text" name="name" value="">
+      </p>
+      <p>
+        <textarea name="content" rows="5" cols="20"></textarea>
+      </p>
+      <input type="submit" name="submit" value="Add">
+    </form>
+    <hr>
+    {% for descripton in descriptons %}
+      <p>
+        {{ descripton.id }}
+      </p>
+    {% endfor %}
+    {% if courses %}
+      <ul>
+        {% for course in courses %}
+          <li>{{ course.id }} {{ course.name }} {{ course.descripton.content }}
+            <ul>
+              {% for user in course.users.all %}
+                <li>{{ user.first_name }} {{ user.last_name }}</li>
+              {% endfor %}
+            </ul>
+            <form class="" action="/delete/{{ course.id }}" method="post">
+              {% csrf_token %}
+              <input type="submit" name="submit" value="Delete course">
+            </form>
+            <form class="" action="/descripton/delete/{{ course.descripton.id }}" method="post">
+              {% csrf_token %}
+              <input type="submit" name="submit" value="Delete descripton">
+            </form>
+          </li>
+
+          <hr>
+          {% endfor %}
+      </ul>
+    {% endif %}
+    <h1>Add user to course</h1>
+    <form class="" action="{% url 'courses:add_user_to_course' %}" method="post">
+      {% csrf_token %}
+      <p>User</p>
+      <select class="" name="user_id">
+        {% for user in users %}
+          <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+        {% endfor %}
+      </select>
+      <p>Course</p>
+      <select class="" name="course_id">
+        {% for course in courses %}
+          <option value="{{ course.id }}">{{ course.name }} {{ course.id }}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" name="" value="Add">
+    </form>
+    <h1>Users courses</h1>
+    <ul>
+      {% for user in users %}
+        <li>{{ user.first_name }} {{ user.last_name }}</li>
+        <ul>
+          {% for course in user.belongs_to.all %}
+            <li>{{ course.name }}</li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
